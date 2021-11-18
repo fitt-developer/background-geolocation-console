@@ -5,7 +5,8 @@ import 'colors';
 import compress from 'compression';
 import express from 'express';
 import morgan from 'morgan';
-import { extname, resolve } from 'path';
+import dotenv from "dotenv";
+import { extname, resolve, join } from 'path';
 
 import {
   dyno,
@@ -25,6 +26,7 @@ const app = express();
 const staticContent = resolve('.', 'public');
 const parserLimits = { limit: parserLimit, extended: true };
 
+dotenv.config();
 process.on('uncaughtException', err => {
   // eslint-disable-next-line no-console
   console.error('<!> Exception %s: ', err.message, err.stack);
@@ -86,6 +88,7 @@ app.use(bodyParser.raw(parserLimits));
     console.log('╔═══════════════════════════════════════════════════════════'.green.bold);
     console.log('║ Background Geolocation Server | port: %s, dyno: %s'.green.bold, port, dyno);
     console.log('╚═══════════════════════════════════════════════════════════'.green.bold);
+    console.log(process.env.GOOGLE_MAPS_API_KEY);
   });
 })());
 
